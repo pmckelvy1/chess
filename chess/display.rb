@@ -19,7 +19,9 @@ class Display
   def build_row(row, i)
     row.map.with_index do |piece, j|
       color_options = colors_for(i, j)
-      piece.to_s.colorize(color_options)
+      space_string = " " + piece.class.to_s.slice(0,2) + " "
+      space_string = "    " if space_string == " St "
+      space_string.colorize(color_options)
     end
   end
 

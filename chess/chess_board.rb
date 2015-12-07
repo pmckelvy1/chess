@@ -1,4 +1,6 @@
 require_relative 'display'
+require_relative 'chess_pieces'
+
 class ChessError < StandardError
   def message
     puts "This is a Chess Error!"
@@ -19,12 +21,30 @@ class Board
     while i < 8
       j = 0
       while j < 8
-        if i <= 1 || i >= 6
-          @grid[i][j] = "piece"
+        if i == 1
+          @grid[i][j] = Pawn.new(self, true, [i, j])
+        end
+        if i == 6
+          @grid[i][j] = Pawn.new(self, false, [i, j])
+        end
+        if i == 0
+          @grid[i][j] = Rook.new(self, true, [i, j]) if j == 0 || j == 7
+          @grid[i][j] = Knight.new(self, true, [i, j]) if j == 1 || j == 6
+          @grid[i][j] = Bishop.new(self, true, [i, j]) if j == 2 || j == 5
+          @grid[i][j] = Queen.new(self, true, [i, j]) if j == 3
+          @grid[i][j] = King.new(self, true, [i, j]) if j == 4
+        end
+        if i == 7
+          @grid[i][j] = Rook.new(self, false, [i, j]) if j == 0 || j == 7
+          @grid[i][j] = Knight.new(self, false, [i, j]) if j == 1 || j == 6
+          @grid[i][j] = Bishop.new(self, false, [i, j]) if j == 2 || j == 5
+          @grid[i][j] = Queen.new(self, false, [i, j]) if j == 3
+          @grid[i][j] = King.new(self, false, [i, j]) if j == 4
         end
         j+= 1
+        # @grid[i][j] = "rook"
+        # j += 1
       end
-
       i += 1
     end
   end
