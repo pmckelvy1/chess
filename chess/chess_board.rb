@@ -61,6 +61,20 @@ class Board
   def move(start, end_pos)
       raise ChessError if self[*start].nil?
       piece = self[*start]
+
+      if piece.valid_moves.include?(end_pos)
+        self[*start] = nil
+
+        raise ChessError unless self[*end_pos].nil?
+        self[*end_pos] = piece
+      else
+        raise ChessError
+      end
+  end
+
+  def move!(start, end_pos)
+      raise ChessError if self[*start].nil?
+      piece = self[*start]
       self[*start] = nil
 
       raise ChessError unless self[*end_pos].nil?
@@ -71,11 +85,13 @@ class Board
     pos.all? { |x| x.between?(0, 7) }
   end
 
+#not working
   def in_check?(color)
     king_pos = find_king(color)
 
     grid.each do |row|
       row.each do |piece|
+        next if piece.nil?
         if piece.color != color && piece.moves.include?(king_pos)
           return true
         end
@@ -88,6 +104,7 @@ class Board
     if in_check?(color)
       grid.each do |row|
         row.each do |piece|
+          next if piece.nil?
           if piece.color == color && piece.valid_moves.empty?
             return true
           end
@@ -128,8 +145,10 @@ class Board
         piece.board = new_board
       end
     end
+
+    new_board
   end
-  
+
 end
 
 if __FILE__ == $PROGRAM_NAME

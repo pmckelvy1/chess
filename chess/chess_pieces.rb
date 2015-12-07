@@ -20,20 +20,17 @@ class Piece
   end
 
   def is_opponent?(opp_color)
-    return opp_color == self.color? ? false : true
+    return opp_color == self.color ? false : true
   end
 
   def valid_moves
     possible_moves = self.moves
     possible_moves.reject! { |move| move_into_check?(move) }
-
   end
 
   def move_into_check?(position)
     new_board = self.board.board_dup
-
-    new_board[self.position] = nil
-    new_board[position] = self
+    new_board.move!(self.position, position)
     new_board.in_check?(self.color)
   end
 end
