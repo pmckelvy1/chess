@@ -11,8 +11,9 @@ end
 class Board
 
   attr_accessor :grid
+
   def initialize()
-    @grid = Array.new(8) { Array.new(8) { " " }}
+    @grid = Array.new(8) { Array.new(8) { nil } }
     populate_board
   end
 
@@ -22,24 +23,24 @@ class Board
       j = 0
       while j < 8
         if i == 1
-          @grid[i][j] = Pawn.new(self, true, [i, j])
+          @grid[i][j] = Pawn.new(self, :b, [i, j])
         end
         if i == 6
-          @grid[i][j] = Pawn.new(self, false, [i, j])
+          @grid[i][j] = Pawn.new(self, :w, [i, j])
         end
         if i == 0
-          @grid[i][j] = Rook.new(self, true, [i, j]) if j == 0 || j == 7
-          @grid[i][j] = Knight.new(self, true, [i, j]) if j == 1 || j == 6
-          @grid[i][j] = Bishop.new(self, true, [i, j]) if j == 2 || j == 5
-          @grid[i][j] = Queen.new(self, true, [i, j]) if j == 3
-          @grid[i][j] = King.new(self, true, [i, j]) if j == 4
+          @grid[i][j] = Rook.new(self, :b, [i, j]) if j == 0 || j == 7
+          @grid[i][j] = Knight.new(self, :b, [i, j]) if j == 1 || j == 6
+          @grid[i][j] = Bishop.new(self, :b, [i, j]) if j == 2 || j == 5
+          @grid[i][j] = Queen.new(self, :b, [i, j]) if j == 3
+          @grid[i][j] = King.new(self, :b, [i, j]) if j == 4
         end
         if i == 7
-          @grid[i][j] = Rook.new(self, false, [i, j]) if j == 0 || j == 7
-          @grid[i][j] = Knight.new(self, false, [i, j]) if j == 1 || j == 6
-          @grid[i][j] = Bishop.new(self, false, [i, j]) if j == 2 || j == 5
-          @grid[i][j] = Queen.new(self, false, [i, j]) if j == 3
-          @grid[i][j] = King.new(self, false, [i, j]) if j == 4
+          @grid[i][j] = Rook.new(self, :w, [i, j]) if j == 0 || j == 7
+          @grid[i][j] = Knight.new(self, :w, [i, j]) if j == 1 || j == 6
+          @grid[i][j] = Bishop.new(self, :w, [i, j]) if j == 2 || j == 5
+          @grid[i][j] = Queen.new(self, :w, [i, j]) if j == 3
+          @grid[i][j] = King.new(self, :w, [i, j]) if j == 4
         end
         j+= 1
         # @grid[i][j] = "rook"
@@ -68,6 +69,68 @@ class Board
 
   def in_bounds?(pos)
     pos.all? { |x| x.between?(0, 7) }
+  end
+
+  def in_check?(color)
+    king_pos = find_king(color)
+
+    grid.each do |row|
+      row.each do |piece|
+        if piece.color != color && piece.moves.include?(king_pos)
+          return true
+        end
+      end
+    end
+    false
+  end
+
+
+  def checkmate?(color)
+    if in_check?(color)
+
+    grid.each do |row|
+      row.each do |piece|
+        if piece.color == color && !piece.valid_moves.empty?
+          return true
+        end
+      end
+    end
+    false
+
+  end
+
+  def find_king(color)
+    grid.each do |row|
+      row.each do |piece|
+        return piece.position if piece.is_a?(King) && piece.color == color
+      end
+    end
+  end
+
+
+  def board_dup
+    new_grid = Array.new(8) { Array.new(8) { nil } }
+
+    @grid.each do |row|
+      row.each do |piece|
+        next if piece.nil?
+        new_pos = piece.position.dup
+        new_piece = piece.dup
+        new_piece.position = new_pos
+        new_grid[new_pos[0]][new_pos[1]] = new_piece
+      end
+    end
+
+    new_board = Board.new
+    new_board.grid = new_grid
+
+    new_board.grid.each do |row|
+      row.each do |piece|
+        next if piece.nil?
+        piece.board = new_board
+      end
+    end
+
   end
 end
 

@@ -20,7 +20,7 @@ class Display
     row.map.with_index do |piece, j|
       color_options = colors_for(i, j)
       space_string = " " + piece.class.to_s.slice(0,2) + " "
-      space_string = "    " if space_string == " St "
+      space_string = "    " if space_string == " Ni "
       space_string.colorize(color_options)
     end
   end

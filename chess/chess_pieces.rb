@@ -1,13 +1,14 @@
 require_relative "chess_board"
+require 'byebug'
 
 class Piece
 
   attr_accessor :board, :postion
-  attr_reader :is_black
+  attr_reader :color
 
-  def initialize(board, is_black, position)
+  def initialize(board, color, position)
     @board = board
-    @is_black = is_black
+    @color = color
     @position = position
   end
 
@@ -15,11 +16,11 @@ class Piece
   end
 
   def is_black?
-    is_black
+    color == :b
   end
 
-  def is_opponent?(is_black)
-    return is_black == self.is_black? ? false : true
+  def is_opponent?(opp_color)
+    return opp_color == self.color? ? false : true
   end
 end
 
@@ -32,11 +33,11 @@ class SlidingPiece < Piece
     possible_moves = []
     self.move_dirs.each do |direction|
       new_pos = [@position[0] + direction[0], @position[1] + direction[1]]
-      while board[*new_pos].nil? && board.in_bounds(new_pos)
+      while board.in_bounds?(new_pos) && board[*new_pos].nil?
         possible_moves << new_pos
         new_pos = [new_pos[0] + direction[0], new_pos[1] + direction[1]]
       end
-      possible_moves << new_pos if board[*new_pos].is_opponent?(is_black) #take the opponent piece
+      possible_moves << new_pos if board[*new_pos].is_opponent?(self.color) && board.in_bounds?(new_pos)#take the opponent piece
     end
     possible_moves
   end
@@ -75,8 +76,8 @@ class SteppingPiece < Piece
     possible_moves = []
     self.move_dirs.each do |direction|
       new_pos = [@position[0] + direction[0], @position[1] + direction[1]]
-      if board.in_bounds(new_pos)
-        possible_moves << new_pos if board[*new_pos].nil? || board[*new_pos].is_opponent?(is_black)
+      if board.in_bounds?(new_pos)
+        possible_moves << new_pos if board[*new_pos].nil? || board[*new_pos].is_opponent?(self.color)
       end
     end
     possible_moves
@@ -108,28 +109,30 @@ class Pawn < Piece
   def moves
     # if board[new_pos].is_opponent?
     possible_moves = []
+
     #move [0, 1] if in_bounds and nil
-    new_pos = [@position[0] + 0, @position[1] + 1]
-    if board.in_bounds(new_pos)
+    new_pos = [@position[0] + 1, @position[1]]
+    if board.in_bounds?(new_pos)
       possible_moves << new_pos if board[*new_pos].nil?
     end
+
     #if if opponent is at -1, 1, [1, 1] is_opponent?
     new_pos = [@position[0] + 1, @position[1] + 1]
-    if board[*new_pos].is_opponent?(is_black)
-      possible_moves << new_pos
+    unless board[*new_pos].nil?
+      possible_moves << new_pos if board[*new_pos].is_opponent?(self.color)
     end
 
-    new_pos = [@position[0] + -1, @position[1] + 1]
-    if board[*new_pos].is_opponent?(is_black)
-      possible_moves << new_pos
+    new_pos = [@position[0] + 1, @position[1] - 1]
+    unless board[*new_pos].nil?
+      possible_moves << new_pos if board[*new_pos].is_opponent?(self.color)
     end
 
     #if starting point - y = 1 or 6 and on board
-    if self.is_black? && @position[1] == 1
-      new_pos = [@position[0], @position[1] + 2]
+    if self.is_black? && @position[0] == 1
+      new_pos = [@position[0] + 2, @position[1]]
       possible_moves << new_pos if board[*new_pos].nil?
-    elsif !(self.is_black?) && position[1] == 6
-      new_pos = [@position[0], @position[1] + 2]
+    elsif !(self.is_black?) && @position[0] == 6
+      new_pos = [@position[0] - 2, @position[1]]
       possible_moves << new_pos if board[*new_pos].nil?
     end
 
