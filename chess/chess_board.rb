@@ -84,19 +84,18 @@ class Board
     false
   end
 
-
   def checkmate?(color)
     if in_check?(color)
-
-    grid.each do |row|
-      row.each do |piece|
-        if piece.color == color && !piece.valid_moves.empty?
-          return true
+      grid.each do |row|
+        row.each do |piece|
+          if piece.color == color && piece.valid_moves.empty?
+            return true
+          end
         end
       end
     end
-    false
 
+    false
   end
 
   def find_king(color)
@@ -106,7 +105,6 @@ class Board
       end
     end
   end
-
 
   def board_dup
     new_grid = Array.new(8) { Array.new(8) { nil } }
@@ -130,8 +128,8 @@ class Board
         piece.board = new_board
       end
     end
-
   end
+  
 end
 
 if __FILE__ == $PROGRAM_NAME
