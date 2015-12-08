@@ -44,10 +44,13 @@ class Board
       unless empty?(end_pos) || self[end_pos].opponent?(piece.color)
         raise ChessError.new("INVALID MOVE, POSITION FILLED")
       end
+
+      if piece.move_into_check?(end_pos)
+        raise ChessError.new("CAN'T MOVE INTO CHECK")
+      end
+
       self[start] = nil
-
       self[end_pos] = piece
-
       piece.position = end_pos
     else
       raise ChessError
@@ -100,7 +103,6 @@ class Board
 
   def board_dup
     new_grid = Array.new(8) { Array.new(8) { nil } }
-
     pieces = self.pieces
 
     pieces.each do |piece|

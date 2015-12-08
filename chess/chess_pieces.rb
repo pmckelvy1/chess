@@ -22,12 +22,13 @@ class Piece
 
   def valid_moves
     possible_moves = self.moves
-    possible_moves.reject! { |move| move_into_check?(move) }
+    #possible_moves.reject! { |move| move_into_check?(move) }
     possible_moves
   end
 
   def move_into_check?(new_position)
     new_board = self.board.board_dup
+    new_board.move!(self.position, new_position)
     new_board.in_check?(self.color)
   end
 end
