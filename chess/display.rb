@@ -36,12 +36,19 @@ class Display
     else
       bg = :blue
     end
-    { background: bg, color: :white }
+    unless @board[i, j].nil?
+      if @board[i, j].color == :w
+        col = :white
+      else
+        col = :black
+      end
+    end
+    { background: bg, color: col }
   end
 
   def render
     system("clear")
-    puts "Fill the grid!"
+    puts "Current Player"
     puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
   end

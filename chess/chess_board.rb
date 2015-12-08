@@ -3,9 +3,7 @@ require_relative 'chess_pieces'
 require 'byebug'
 
 class ChessError < StandardError
-  def message
-    puts "This is a Chess Error!"
-  end
+
 end
 
 
@@ -60,25 +58,29 @@ class Board
   end
 
   def move(start, end_pos)
-      raise ChessError if self[*start].nil?
+      raise ChessError.new("NO PIECE SELECTED!") if self[*start].nil?
       piece = self[*start]
 
+
       if piece.valid_moves.include?(end_pos)
+        raise ChessError.new("INVALID MOVE, POSITION FILLED") unless self[*end_pos].nil? || self[*end_pos].is_opponent?(piece.color)
         self[*start] = nil
 
-        raise ChessError unless self[*end_pos].nil?
         self[*end_pos] = piece
+
+        piece.position = end_pos
       else
         raise ChessError
       end
   end
 
   def move!(start, end_pos)
-      raise ChessError if self[*start].nil?
+      raise ChessError.new("NO PIECE SELECTED") if self[*start].nil?
       piece = self[*start]
+      raise ChessError.new("INVALID MOVE, POSITION FILLED") unless self[*end_pos].nil?
       self[*start] = nil
 
-      raise ChessError unless self[*end_pos].nil?
+
       self[*end_pos] = piece
   end
 
@@ -93,6 +95,7 @@ class Board
     grid.each do |row|
       row.each do |piece|
         next if piece.nil?
+          #debugger
         if piece.color != color && piece.moves.include?(king_pos)
           return true
         end

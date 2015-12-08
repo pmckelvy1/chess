@@ -2,34 +2,38 @@ require_relative 'display'
 
 class HumanPlayer
 
-  attr_reader :name, display
+  attr_reader :name, :display, :color
 
-  def initialize(name , board)
+  def initialize(name , board , color)
     @name = name
     @display = Display.new(board)
+    @color = color
   end
 
-  def play_turn
+  def get_move
     prompt_user
 
-    result_position = nil
-    until display.selected
-      display.render
-      display.move
-      result_position = display.get_input
-    end
-
-    while display.selected
-      display.render
-      display.move
-      result_position = display.get_input
-    end
-
-    result_position
+    position_moves = []
+    position_moves << get_position
+    position_moves << get_position
+    position_moves
   end
 
+  def get_position
+    position = nil
+    until position
+      display.render
+      display.move
+      position = display.get_input
+    end
+
+    position
+  end
+
+
+
   def prompt_user
-    puts "PLEASE MAKE A MOVE"
+    puts "PLEASE MAKE A MOVE #{name}"
   end
 
 
