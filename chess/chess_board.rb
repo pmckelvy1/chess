@@ -3,12 +3,10 @@ require_relative 'chess_pieces'
 require 'byebug'
 
 class ChessError < StandardError
-
 end
 
 
 class Board
-
   attr_accessor :grid
 
   def initialize()
@@ -17,6 +15,7 @@ class Board
   end
 
   def populate_board
+    # [Rook, Knight, Bishop...]
     i = 0
     while i < 8
       j = 0
@@ -58,32 +57,30 @@ class Board
   end
 
   def move(start, end_pos, current_color)
-      raise ChessError.new("NO PIECE SELECTED!") if self[*start].nil?
+    raise ChessError.new("NO PIECE SELECTED!") if self[*start].nil?
+    raise ChessError.new("WRONG PIECE SELECTED!") if self[*start].color != current_color
 
-      raise ChessError.new("WRONG PIECE SELECTED!") if self[*start].color != current_color
-      piece = self[*start]
+    piece = self[*start]
 
+    if piece.valid_moves.include?(end_pos)
+      raise ChessError.new("INVALID MOVE, POSITION FILLED") unless self[*end_pos].nil? || self[*end_pos].is_opponent?(piece.color)
+      self[*start] = nil
 
-      if piece.valid_moves.include?(end_pos)
-        raise ChessError.new("INVALID MOVE, POSITION FILLED") unless self[*end_pos].nil? || self[*end_pos].is_opponent?(piece.color)
-        self[*start] = nil
+      self[*end_pos] = piece
 
-        self[*end_pos] = piece
-
-        piece.position = end_pos
-      else
-        raise ChessError
-      end
+      piece.position = end_pos
+    else
+      raise ChessError
+    end
   end
 
   def move!(start, end_pos)
-      raise ChessError.new("NO PIECE SELECTED") if self[*start].nil?
-      piece = self[*start]
-      raise ChessError.new("INVALID MOVE, POSITION FILLED") unless self[*end_pos].nil?
-      self[*start] = nil
+    raise ChessError.new("NO PIECE SELECTED") if self[*start].nil?
+    piece = self[*start]
+    raise ChessError.new("INVALID MOVE, POSITION FILLED") unless self[*end_pos].nil?
+    self[*start] = nil
 
-
-      self[*end_pos] = piece
+    self[*end_pos] = piece
   end
 
   def in_bounds?(pos)
@@ -158,5 +155,4 @@ class Board
   def inspect
     "board"
   end
-
 end

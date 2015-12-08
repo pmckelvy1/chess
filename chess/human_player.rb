@@ -1,7 +1,6 @@
 require_relative 'display'
 
 class HumanPlayer
-
   attr_reader :name, :display, :color
 
   def initialize(name , board , color)
@@ -31,12 +30,7 @@ class HumanPlayer
     position
   end
 
-
-
   def prompt_user
     puts "PLEASE MAKE A MOVE #{name}"
   end
-
-
-
 end

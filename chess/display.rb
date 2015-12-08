@@ -10,7 +10,7 @@ class Display
   def initialize(board)
     @board = board
     @cursor_pos = [0, 0]
-    @selected = false
+    # @selected = false
   end
 
   def build_grid

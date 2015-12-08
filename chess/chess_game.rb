@@ -1,5 +1,4 @@
-require_relative 'human_player'
-require_relative 'chess_board'
+require_relative 'requirements'
 
 class ChessGame
 
@@ -10,12 +9,10 @@ attr_accessor :current_player, :previous_player
     @board = board
     @current_player = HumanPlayer.new("Player 1", board, :w)
     @previous_player = HumanPlayer.new("Player 2", board, :b)
-
   end
 
   def play
     until game_over?
-
       begin
         move_positions = current_player.get_move
         board.move(move_positions[0], move_positions[1], current_player.color)
@@ -37,7 +34,6 @@ attr_accessor :current_player, :previous_player
   def game_over?
     board.checkmate?(current_player.color)
   end
-
 end
 
 if __FILE__ == $PROGRAM_NAME
