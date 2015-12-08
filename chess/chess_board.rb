@@ -31,13 +31,19 @@ class Board
   end
 
   def move(start, end_pos, current_color)
-    raise ChessError.new("NO PIECE SELECTED!") if empty?(start)
-    raise ChessError.new("WRONG PIECE SELECTED!") if self[start].color != current_color
+    if empty?(start)
+      raise ChessError.new("NO PIECE SELECTED!")
+    end
+    if self[start].opponent?(current_color)
+      raise ChessError.new("WRONG PIECE SELECTED!")
+    end
 
     piece = self[start]
 
     if piece.valid_moves.include?(end_pos)
-      raise ChessError.new("INVALID MOVE, POSITION FILLED") unless empty?(end_pos) || self[end_pos].opponent?(piece.color)
+      unless empty?(end_pos) || self[end_pos].opponent?(piece.color)
+        raise ChessError.new("INVALID MOVE, POSITION FILLED")
+      end
       self[start] = nil
 
       self[end_pos] = piece

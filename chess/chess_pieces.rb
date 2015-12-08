@@ -1,6 +1,6 @@
 class Piece
 
-  attr_accessor :board, :position
+  attr_accessor :position, :board
   attr_reader :color
 
   def initialize(board, color, position)
@@ -17,7 +17,7 @@ class Piece
   end
 
   def opponent?(opp_color)
-    return opp_color == self.color ? false : true
+    opp_color != self.color
   end
 
   def valid_moves
