@@ -5,9 +5,12 @@ require_relative "chess_board"
 class Display
   include Cursorable
 
+  attr_accessor :selected
+
   def initialize(board)
     @board = board
     @cursor_pos = [0, 0]
+    @selected = false
   end
 
   def build_grid

@@ -89,7 +89,7 @@ class Board
 #not working
   def in_check?(color)
     king_pos = find_king(color)
-    
+
     grid.each do |row|
       row.each do |piece|
         next if piece.nil?
@@ -154,14 +154,4 @@ class Board
     "board"
   end
 
-end
-
-if __FILE__ == $PROGRAM_NAME
-
-  b = Board.new
-  d = Display.new(b)
-  while true
-    d.render
-    d.move
-  end
 end
