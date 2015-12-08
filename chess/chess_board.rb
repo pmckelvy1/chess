@@ -3,45 +3,23 @@ end
 
 
 class Board
+  BOARD_SIZE = 8
+  PIECES = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+
   attr_accessor :grid
 
   def initialize()
-    @grid = Array.new(8) { Array.new(8) { nil } }
+    @grid = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) { nil } }
     populate_board
   end
 
   def populate_board
-    # [Rook, Knight, Bishop...]
-    i = 0
-    while i < 8
-      j = 0
-      while j < 8
-        if i == 1
-          @grid[i][j] = Pawn.new(self, :b, [i, j])
-        end
-        if i == 6
-          @grid[i][j] = Pawn.new(self, :w, [i, j])
-        end
-        if i == 0
-          @grid[i][j] = Rook.new(self, :b, [i, j]) if j == 0 || j == 7
-          @grid[i][j] = Knight.new(self, :b, [i, j]) if j == 1 || j == 6
-          @grid[i][j] = Bishop.new(self, :b, [i, j]) if j == 2 || j == 5
-          @grid[i][j] = Queen.new(self, :b, [i, j]) if j == 3
-          @grid[i][j] = King.new(self, :b, [i, j]) if j == 4
-        end
-        if i == 7
-          @grid[i][j] = Rook.new(self, :w, [i, j]) if j == 0 || j == 7
-          @grid[i][j] = Knight.new(self, :w, [i, j]) if j == 1 || j == 6
-          @grid[i][j] = Bishop.new(self, :w, [i, j]) if j == 2 || j == 5
-          @grid[i][j] = Queen.new(self, :w, [i, j]) if j == 3
-          @grid[i][j] = King.new(self, :w, [i, j]) if j == 4
-        end
-        j+= 1
-        # @grid[i][j] = "rook"
-        # j += 1
+      PIECES.each_with_index do |piece, idx|
+        @grid[0][idx] = piece.new(self, :b, [0, idx])
+        @grid[1][idx] = Pawn.new(self, :b, [1, idx])
+        @grid[7][idx] = piece.new(self, :w, [7, idx])
+        @grid[6][idx] = Pawn.new(self, :w, [6, idx])
       end
-      i += 1
-    end
   end
 
   def []=(pos, piece)
