@@ -71,26 +71,20 @@ class Board
   def in_check?(color)
     king_pos = find_king(color)
 
-    grid.each do |row|
-      row.each do |piece|
-        next if piece.nil?
-          #debugger
-        if piece.color != color && piece.moves.include?(king_pos)
-          return true
-        end
+    pieces.each do |piece|
+      if piece.color != color && piece.moves.include?(king_pos)
+        return true
       end
     end
+
     false
   end
 
   def checkmate?(color)
     if in_check?(color)
-      grid.each do |row|
-        row.each do |piece|
-          next if piece.nil?
-          if piece.color == color && piece.valid_moves.empty?
-            return true
-          end
+      pieces.each do |piece|
+        if piece.color == color && piece.valid_moves.empty?
+          return true
         end
       end
     end
@@ -99,10 +93,8 @@ class Board
   end
 
   def find_king(color)
-    grid.each do |row|
-      row.each do |piece|
+    pieces.each do |piece|
         return piece.position if piece.is_a?(King) && piece.color == color
-      end
     end
   end
 
@@ -118,31 +110,13 @@ class Board
       new_grid[new_pos[0]][new_pos[1]] = new_piece
     end
 
-    # @grid.each do |row|
-    #   row.each do |piece|
-    #     next if piece.nil?
-    #     new_pos = piece.position.dup
-    #     new_piece = piece.dup
-    #     new_piece.position = new_pos
-    #     new_grid[new_pos[0]][new_pos[1]] = new_piece
-    #   end
-    # end
-
     new_board = Board.new
     new_board.grid = new_grid
-
     new_pieces = new_board.pieces
 
     new_pieces.each do |piece|
       piece.board = new_board
     end
-
-    # new_board.grid.each do |row|
-    #   row.each do |piece|
-    #     next if piece.nil?
-    #     piece.board = new_board
-    #   end
-    # end
 
     new_board
   end
