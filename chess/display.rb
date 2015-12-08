@@ -46,17 +46,17 @@ class Display
     { background: bg, color: col }
   end
 
-  def render
+  def render(current_player)
     system("clear")
-    puts "Current Player"
+    puts "Current Player: #{current_player.name}, #{current_player.color}"
     puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
   end
 
-  def move
+  def move(current_player)
     result = nil
     until result
-      render
+      render(current_player)
       result = get_input
     end
     result

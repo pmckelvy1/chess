@@ -23,8 +23,8 @@ class HumanPlayer
     position = nil
     until position
       puts "#{self.color}'s turn'"
-      display.render
-      display.move
+      display.render(self)
+      display.move(self)
       position = display.get_input
     end
 

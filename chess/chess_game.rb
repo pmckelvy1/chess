@@ -23,7 +23,7 @@ attr_accessor :current_player, :previous_player
         puts e.message
         retry
       end
-      current_player.display.render
+      current_player.display.render(@current_player)
       switch_players!
     end
 
