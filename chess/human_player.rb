@@ -1,18 +1,18 @@
 class HumanPlayer
   attr_reader :name, :display, :color
 
-  def initialize(name , board , color)
+  def initialize(name , board , color, display)
     @name = name
-    @display = Display.new(board)
+    @display = display
     @color = color
   end
 
   def get_move
     prompt_user
 
-    position_moves = []
-    position_moves << get_position
-    position_moves << get_position
+    position_moves = {}
+    position_moves[:start] = get_position
+    position_moves[:finish] = get_position
     position_moves
   end
 

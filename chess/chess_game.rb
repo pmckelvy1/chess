@@ -7,15 +7,16 @@ attr_accessor :current_player, :previous_player
 
   def initialize(board)
     @board = board
-    @current_player = HumanPlayer.new("Player 1", board, :w)
-    @previous_player = HumanPlayer.new("Player 2", board, :b)
+    @display = Display.new(board)
+    @current_player = HumanPlayer.new("Player 1", board, :w, @display)
+    @previous_player = HumanPlayer.new("Player 2", board, :b, @display)
   end
 
   def play
     until game_over?
       begin
         move_positions = current_player.get_move
-        board.move(move_positions[0], move_positions[1], current_player.color)
+        board.move(move_positions[:start], move_positions[:finish], current_player.color)
       rescue ChessError => e
         puts e.message
         retry
