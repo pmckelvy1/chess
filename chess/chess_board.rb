@@ -57,8 +57,10 @@ class Board
     @grid[x][y]
   end
 
-  def move(start, end_pos)
+  def move(start, end_pos, current_color)
       raise ChessError.new("NO PIECE SELECTED!") if self[*start].nil?
+
+      raise ChessError.new("WRONG PIECE SELECTED!") if self[*start].color != current_color
       piece = self[*start]
 
 

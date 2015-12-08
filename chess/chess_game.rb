@@ -18,7 +18,7 @@ attr_accessor :current_player, :previous_player
 
       begin
         move_positions = current_player.get_move
-        board.move(move_positions[0], move_positions[1])
+        board.move(move_positions[0], move_positions[1], current_player.color)
       rescue ChessError => e
         puts e.message
         retry
@@ -31,7 +31,7 @@ attr_accessor :current_player, :previous_player
   end
 
   def switch_players!
-    current_player, previous_player = previous_player, current_player
+    @current_player, @previous_player = @previous_player, @current_player
   end
 
   def game_over?

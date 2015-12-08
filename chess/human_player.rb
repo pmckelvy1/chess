@@ -22,6 +22,7 @@ class HumanPlayer
   def get_position
     position = nil
     until position
+      puts "#{self.color}'s turn'"
       display.render
       display.move
       position = display.get_input
