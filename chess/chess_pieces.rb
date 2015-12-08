@@ -28,9 +28,9 @@ class Piece
     possible_moves.reject! { |move| move_into_check?(move) }
   end
 
-  def move_into_check?(position)
+  def move_into_check?(new_position)
     new_board = self.board.board_dup
-    new_board.move!(self.position, position)
+    new_board.move!(self.position, new_position)
     new_board.in_check?(self.color)
   end
 end
@@ -48,7 +48,7 @@ class SlidingPiece < Piece
         possible_moves << new_pos
         new_pos = [new_pos[0] + direction[0], new_pos[1] + direction[1]]
       end
-      possible_moves << new_pos if board[*new_pos].is_opponent?(self.color) && board.in_bounds?(new_pos)#take the opponent piece
+      possible_moves << new_pos if board.in_bounds?(new_pos) && board[*new_pos].is_opponent?(self.color)
     end
     possible_moves
   end
@@ -121,10 +121,17 @@ class Pawn < Piece
     # if board[new_pos].is_opponent?
     possible_moves = []
 
-    #move [0, 1] if in_bounds and nil
-    new_pos = [@position[0] + 1, @position[1]]
-    if board.in_bounds?(new_pos)
-      possible_moves << new_pos if board[*new_pos].nil?
+    #move [1, 0] if in_bounds and nil
+    if self.is_black?
+      new_pos = [@position[0] + 1, @position[1]]
+      if board.in_bounds?(new_pos)
+        possible_moves << new_pos if board[*new_pos].nil?
+      end
+    elsif !(self.is_black?)
+      new_pos = [@position[0] + 1, @position[1]]
+      if board.in_bounds?(new_pos)
+        possible_moves << new_pos if board[*new_pos].nil?
+      end
     end
 
     #if if opponent is at -1, 1, [1, 1] is_opponent?

@@ -1,5 +1,6 @@
 require_relative 'display'
 require_relative 'chess_pieces'
+require 'byebug'
 
 class ChessError < StandardError
   def message
@@ -88,7 +89,7 @@ class Board
 #not working
   def in_check?(color)
     king_pos = find_king(color)
-
+    
     grid.each do |row|
       row.each do |piece|
         next if piece.nil?
@@ -147,6 +148,10 @@ class Board
     end
 
     new_board
+  end
+
+  def inspect
+    "board"
   end
 
 end
