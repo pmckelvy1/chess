@@ -1,6 +1,3 @@
-require_relative "chess_board"
-require 'byebug'
-
 class Piece
 
   attr_accessor :board, :position

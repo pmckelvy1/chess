@@ -36,8 +36,8 @@ class Display
     else
       bg = :blue
     end
-    unless @board[i, j].nil?
-      if @board[i, j].color == :w
+    unless @board[[i, j]].nil?
+      if @board[[i, j]].color == :w
         col = :white
       else
         col = :black
