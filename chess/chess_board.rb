@@ -109,31 +109,55 @@ class Board
   def board_dup
     new_grid = Array.new(8) { Array.new(8) { nil } }
 
-    @grid.each do |row|
-      row.each do |piece|
-        next if piece.nil?
-        new_pos = piece.position.dup
-        new_piece = piece.dup
-        new_piece.position = new_pos
-        new_grid[new_pos[0]][new_pos[1]] = new_piece
-      end
+    pieces = self.pieces
+
+    pieces.each do |piece|
+      new_pos = piece.position.dup
+      new_piece = piece.dup
+      new_piece.position = new_pos
+      new_grid[new_pos[0]][new_pos[1]] = new_piece
     end
+
+    # @grid.each do |row|
+    #   row.each do |piece|
+    #     next if piece.nil?
+    #     new_pos = piece.position.dup
+    #     new_piece = piece.dup
+    #     new_piece.position = new_pos
+    #     new_grid[new_pos[0]][new_pos[1]] = new_piece
+    #   end
+    # end
 
     new_board = Board.new
     new_board.grid = new_grid
 
-    new_board.grid.each do |row|
-      row.each do |piece|
-        next if piece.nil?
-        piece.board = new_board
-      end
+    pieces.each do |piece|
+      piece.board = new_board
     end
+
+    # new_board.grid.each do |row|
+    #   row.each do |piece|
+    #     next if piece.nil?
+    #     piece.board = new_board
+    #   end
+    # end
 
     new_board
   end
 
   def empty?(position)
     self[position].nil?
+  end
+
+  def pieces
+    pieces = []
+    @grid.each do |row|
+      row.each do |piece|
+        pieces << piece
+      end
+    end
+
+    pieces.compact!
   end
 
   def inspect
