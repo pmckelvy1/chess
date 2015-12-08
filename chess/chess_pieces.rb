@@ -12,11 +12,11 @@ class Piece
   def moves
   end
 
-  def is_black?
+  def black?
     color == :b
   end
 
-  def is_opponent?(opp_color)
+  def opponent?(opp_color)
     return opp_color == self.color ? false : true
   end
 

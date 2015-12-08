@@ -17,7 +17,7 @@ class HumanPlayer
       if @board[start_pos].nil?
         raise ChessError.new("THERE'S NOTHING THERE!")
       end
-      if @board[start_pos].is_opponent?(self.color)
+      if @board[start_pos].opponent?(self.color)
         raise ChessError.new("YOU CAN'T PICK THAT PIECE UP!")
       end
     rescue ChessError => e

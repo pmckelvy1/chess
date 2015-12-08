@@ -31,13 +31,13 @@ class Board
   end
 
   def move(start, end_pos, current_color)
-    raise ChessError.new("NO PIECE SELECTED!") if self[start].nil?
+    raise ChessError.new("NO PIECE SELECTED!") if empty?(start)
     raise ChessError.new("WRONG PIECE SELECTED!") if self[start].color != current_color
 
     piece = self[start]
 
     if piece.valid_moves.include?(end_pos)
-      raise ChessError.new("INVALID MOVE, POSITION FILLED") unless self[end_pos].nil? || self[end_pos].is_opponent?(piece.color)
+      raise ChessError.new("INVALID MOVE, POSITION FILLED") unless empty?(end_pos) || self[end_pos].opponent?(piece.color)
       self[start] = nil
 
       self[end_pos] = piece
@@ -49,9 +49,9 @@ class Board
   end
 
   def move!(start, end_pos)
-    raise ChessError.new("NO PIECE SELECTED") if self[start].nil?
+    raise ChessError.new("NO PIECE SELECTED") if empty?(start)
     piece = self[start]
-    raise ChessError.new("INVALID MOVE, POSITION FILLED") unless self[end_pos].nil?
+    raise ChessError.new("INVALID MOVE, POSITION FILLED") unless empty?(end_pos)
     self[start] = nil
 
     self[end_pos] = piece
@@ -124,6 +124,10 @@ class Board
     end
 
     new_board
+  end
+
+  def empty?(position)
+    self[position].nil?
   end
 
   def inspect
