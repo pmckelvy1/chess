@@ -17,8 +17,13 @@ class Display
   def build_row(row, i)
     row.map.with_index do |piece, j|
       color_options = colors_for(i, j)
-      space_string = " " + piece.class.to_s.slice(0,2) + " "
-      space_string = "    " if space_string == " Ni "
+      if piece.nil?
+        space_string = "   "
+      else
+        space_string = " " + piece.unicode_string + " "
+      end
+      # space_string = " " + piece.class.to_s.slice(0,2) + " "
+
       space_string.colorize(color_options)
     end
   end
@@ -48,12 +53,4 @@ class Display
     build_grid.each { |row| puts row.join }
   end
 
-  def move(current_player)
-    result = nil
-    until result
-      render(current_player)
-      result = get_input
-    end
-    result
-  end
 end

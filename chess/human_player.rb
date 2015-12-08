@@ -35,7 +35,6 @@ class HumanPlayer
     until position
       puts "#{self.color}'s turn'"
       display.render(self)
-      display.move(self)
       position = display.get_input
     end
     position

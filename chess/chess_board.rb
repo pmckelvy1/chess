@@ -5,6 +5,10 @@ end
 class Board
   BOARD_SIZE = 8
   PIECES = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+  BLACK_UNICODE = ["\u265c", "\u265e", "\u265d", "\u265b", "\u265a", "\u265d", "\u265e", "\u265c"]
+  WHITE_UNICODE = ["\u2656", "\u2658", "\u2657", "\u2655", "\u2654", "\u2657", "\u2658", "\u2656"]
+  PAWN_BLACK_UNICODE = "\u265f"
+  PAWN_WHITE_UNICODE = "\u2659"
 
   attr_accessor :grid
 
@@ -15,10 +19,10 @@ class Board
 
   def populate_board
       PIECES.each_with_index do |piece, idx|
-        @grid[0][idx] = piece.new(self, :b, [0, idx])
-        @grid[1][idx] = Pawn.new(self, :b, [1, idx])
-        @grid[7][idx] = piece.new(self, :w, [7, idx])
-        @grid[6][idx] = Pawn.new(self, :w, [6, idx])
+        @grid[0][idx] = piece.new(self, :b, [0, idx], BLACK_UNICODE[idx])
+        @grid[1][idx] = Pawn.new(self, :b, [1, idx], PAWN_BLACK_UNICODE)
+        @grid[7][idx] = piece.new(self, :w, [7, idx], WHITE_UNICODE[idx])
+        @grid[6][idx] = Pawn.new(self, :w, [6, idx], PAWN_WHITE_UNICODE)
       end
   end
 
@@ -40,7 +44,7 @@ class Board
 
     piece = self[start]
 
-    if piece.valid_moves.include?(end_pos)
+    if piece.moves.include?(end_pos)
       unless empty?(end_pos) || self[end_pos].opponent?(piece.color)
         raise ChessError.new("INVALID MOVE, POSITION FILLED")
       end

@@ -19,6 +19,7 @@ attr_accessor :current_player, :previous_player
         board.move(move_positions[:start], move_positions[:finish], current_player.color)
       rescue ChessError => e
         puts e.message
+        sleep(1)
         retry
       end
       current_player.display.render(@current_player)

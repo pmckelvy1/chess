@@ -1,12 +1,13 @@
 class Piece
 
   attr_accessor :position, :board
-  attr_reader :color
+  attr_reader :color, :unicode_string
 
-  def initialize(board, color, position)
+  def initialize(board, color, position, unicode_string)
     @board = board
     @color = color
     @position = position
+    @unicode_string = unicode_string
   end
 
   def moves
@@ -18,12 +19,6 @@ class Piece
 
   def opponent?(opp_color)
     opp_color != self.color
-  end
-
-  def valid_moves
-    possible_moves = self.moves
-    #possible_moves.reject! { |move| move_into_check?(move) }
-    possible_moves
   end
 
   def move_into_check?(new_position)

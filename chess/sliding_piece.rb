@@ -1,11 +1,4 @@
 class SlidingPiece < Piece
-# loop do
-#   break if edge of board
-#   if new_pos not empty?
-#     << if opponent
-#     break
-#   end
-# end
 
   def moves
     possible_moves = []
