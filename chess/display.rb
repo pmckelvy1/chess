@@ -1,7 +1,3 @@
-require "colorize"
-require_relative "cursorable"
-require_relative "chess_board"
-
 class Display
   include Cursorable
 
@@ -10,7 +6,6 @@ class Display
   def initialize(board)
     @board = board
     @cursor_pos = [0, 0]
-    # @selected = false
   end
 
   def build_grid

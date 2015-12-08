@@ -3,6 +3,7 @@ class HumanPlayer
 
   def initialize(name , board , color, display)
     @name = name
+    @board = board
     @display = display
     @color = color
   end
@@ -11,7 +12,20 @@ class HumanPlayer
     prompt_user
 
     position_moves = {}
-    position_moves[:start] = get_position
+    begin
+      start_pos = get_position
+      if @board[start_pos].nil?
+        raise ChessError.new("THERE'S NOTHING THERE!")
+      end
+      if @board[start_pos].is_opponent?(self.color)
+        raise ChessError.new("YOU CAN'T PICK THAT PIECE UP!")
+      end
+    rescue ChessError => e
+      puts e.message
+      sleep(1)
+      retry
+    end
+      position_moves[:start] = start_pos
     position_moves[:finish] = get_position
     position_moves
   end
@@ -24,7 +38,6 @@ class HumanPlayer
       display.move(self)
       position = display.get_input
     end
-
     position
   end
 
