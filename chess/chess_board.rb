@@ -131,7 +131,9 @@ class Board
     new_board = Board.new
     new_board.grid = new_grid
 
-    pieces.each do |piece|
+    new_pieces = new_board.pieces
+
+    new_pieces.each do |piece|
       piece.board = new_board
     end
 

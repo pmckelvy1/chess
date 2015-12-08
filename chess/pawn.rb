@@ -7,7 +7,7 @@ class Pawn < Piece
 
     new_pos = [@position[0] + direction, @position[1]]
     if board.in_bounds?(new_pos)
-      possible_moves << new_pos if board[new_pos].nil?
+      possible_moves << new_pos if board.empty?(new_pos)
     end
 
     #if if opponent is at -1, 1, [1, 1] opponent?
