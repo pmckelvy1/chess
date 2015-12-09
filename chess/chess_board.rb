@@ -64,7 +64,9 @@ class Board
   def move!(start, end_pos)
     raise ChessError.new("NO PIECE SELECTED") if empty?(start)
     piece = self[start]
-    raise ChessError.new("INVALID MOVE, POSITION FILLED") unless empty?(end_pos)
+    unless empty?(end_pos) || self[end_pos].opponent?(piece.color)
+      raise ChessError.new("INVALID MOVE, POSITION FILLED")
+    end
     self[start] = nil
 
     self[end_pos] = piece
@@ -90,7 +92,7 @@ class Board
   def checkmate?(color)
     if in_check?(color)
       pieces.each do |piece|
-        if piece.color == color && piece.valid_moves.empty?
+        if piece.color == color && piece.moves.empty?
           return true
         end
       end
