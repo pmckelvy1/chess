@@ -22,6 +22,7 @@ attr_accessor :current_player, :previous_player
         sleep(1)
         retry
       end
+      break if game_over?
       current_player.display.render(@current_player)
       switch_players!
     end
