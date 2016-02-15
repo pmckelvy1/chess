@@ -49,7 +49,7 @@ class Display
   def render(current_player)
     system("clear")
     puts "Current Player: #{current_player.name}, #{current_player.color}"
-    puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
+    puts "Arrow keys or WASD to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
   end
 
